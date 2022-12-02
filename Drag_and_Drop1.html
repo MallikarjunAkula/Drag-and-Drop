@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>IDE</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+		#div1, #div2 , #div3 {
+		  width: 420px;
+		  height: 500px;
+		  padding: 10px;
+		  float: left;
+		  border: 1px solid #aaaaaa;
+		}
+		#savebutton
+		{
+			background-color: blue;
+			color: whitesmoke;
+			float: center;
+		}
+	
+		.drag
+		{
+			float: left;
+			margin-left: 5px;
+		}
+		</style>
+		<script>
+		function allowDrop(ev) {
+		  ev.preventDefault();
+		}
+
+		function drag(ev) {
+		  ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+		  ev.preventDefault();
+		  var data = ev.dataTransfer.getData("text");
+		  ev.target.append(document.getElementById(data).cloneNode(true));
+
+		  var data = document.getElementById(data).cloneNode(true);
+
+		  document.getElementById("div2").append(data.outerHTML);
+		}
+
+
+		function save() 
+		{
+
+			var MyDiv1 = document.getElementById("div2");
+			var htmlContent = [MyDiv1.textContent];
+			var bl = new Blob(htmlContent, {type: "text/html;charset=utf-8"});
+			var a = document.createElement("a");
+			a.href = URL.createObjectURL(bl);
+			a.download = "IDE.html";
+			a.hidden = true;
+			document.body.appendChild(a);
+			a.click();
+		}
+
+
+
+		</script>
+	</head>
+	<body>
+	<center>
+	<h2>Drag and Drop elements</h2>
+	<div id="div3">
+		<input id = "textbox" type= "text" placeholder = "textbox" class = "drag" draggable="true" ondragstart="drag(event)"><br><br>
+		<input id = "button" type= "button" value = "Button" class = "drag" draggable="true" ondragstart="drag(event)">
+	</div>
+	<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+	<div id="div2" ondrop="drop(event)"></div>
+	<input type = button id = "savebutton" style = "margin-top:25px" value = "download" onclick = "save();">
+	<br>
+
+	</center>
+	</body>
+</html>
